@@ -4,13 +4,18 @@
     {
         public static void Main(string[] args)
         {
+            // Prompt the user to enter the entry date and time
             Console.WriteLine("Enter entry date and time (yyyy-MM-dd HH:mm) in 24 hour format like '2024-06-18 22:45': ");
             DateTime entryDateTime = DateTime.Parse(Console.ReadLine());
 
+            // Prompt the user to enter the exit date and time
             Console.WriteLine("Enter exit date and time (yyyy-MM-dd HH:mm) in 24 hour format like '2024-06-20 08:45': ");
             DateTime exitDateTime = DateTime.Parse(Console.ReadLine());
 
+
             var rate = CalculateRate(entryDateTime, exitDateTime);
+
+            // Display the calculated rate
             Console.WriteLine($"Rate Name: {rate.Item1}, Total Price: ${rate.Item2}");
         }
 
@@ -26,6 +31,7 @@
             if (IsEarlyBirdRate(entry, exit))
                 return new Tuple<string, double>("Early Bird", 13.00);
 
+            //If flat rates are not valid, Standard rate is calcluated
             return CalculateStandardRate(entry, exit);
         }
 
@@ -54,6 +60,7 @@
             TimeSpan duration = exit - entry;
             double totalCost;
 
+            //Calculate total cost based on duration
             if (duration.TotalHours <= 1)
                 totalCost = 5.00;
             else if (duration.TotalHours <= 2)
@@ -62,7 +69,7 @@
                 totalCost = 15.00;
             else
             {
-                // Calculate the flat rate for each day
+                // If duration is more than 3 hours, calcluate by day
                 totalCost = 20.00;
                 DateTime newEntry = entry.Date.AddDays(1);
                 while (newEntry <= exit.Date)
